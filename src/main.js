@@ -4,7 +4,13 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import AsyncComputed from 'vue-async-computed'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
 
+Vue.use(Vuetify, {
+  iconfont: 'md'
+})
 Vue.use(AsyncComputed)
 Vue.config.productionTip = false
 
