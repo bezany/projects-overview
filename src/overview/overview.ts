@@ -18,6 +18,14 @@ function isCurrentDirectory(path: string): boolean {
   return path === join(__dirname, '..')
 }
 
+function getRusAgroUrl (remotes: RemoteWithRefs[]): (string | null) {
+  const gitIp = '***REMOVED***'
+  const finded = remotes.find(remote => {
+    return remote.refs.fetch.includes(gitIp)
+  })
+  return finded ? finded.refs.fetch : null
+}
+
 async function CopyReadme(projectName: string, sourcePath: string) {
   const assetsProjectDir = join(assetsFolder, projectName)
   await fsPromises.mkdir(assetsProjectDir, { recursive: true })
@@ -93,57 +101,3 @@ async function collectData(folder: string) {
 }
 
 collectData(testFolder)
-
-/*
-readdir(testFolder, async (err, files) => {
-  const isDirectory = (source: string) => lstatSync(source).isDirectory()
-  const res:{ [index:string] : { git_url: string | null, path: string } } = {}
-  const folderWithProjects = files
-    .map(file => {
-      return {
-        name: file,
-        path: join(testFolder, file)
-      }
-    })
-    .filter(({ name, path }) => isDirectory(path) && path !== join(__dirname, '..'))
-  await Promise.all(folderWithProjects.map(async ({ name, path }) => {
-    const git = simplegit(path)
-    const isRepo = await git.checkIsRepo()
-    if (!isRepo) {
-      return
-    }
-    const remotes = isRepo ? (await git.getRemotes(true)) : []
-    const gitUrl = getRusAgroUrl(remotes)
-    if (!gitUrl) {
-      return
-    }
-    res[name] = {
-      git_url: gitUrl,
-      path: path
-    }
-    const assetsProjectDir = join(assetsFolder, name)
-    mkdir(assetsProjectDir, { recursive: true }, (err) => {
-      if (err) throw err;
-      copyFile(join(path, 'README.md'), join(assetsProjectDir, 'README.md'), (err) => {
-        if (err) throw err;
-        console.log('name README was copied');
-      });
-    });
-  }))
-  console.log(JSON.stringify(res, null, 2))
-});
-*/
-function checkIsRusagroRepo (remotes: RemoteWithRefs[]): boolean {
-  const gitIp = '***REMOVED***'
-  return remotes.some(remote => {
-    return remote.refs.fetch.includes(gitIp)
-  })
-}
-
-function getRusAgroUrl (remotes: RemoteWithRefs[]): (string | null) {
-  const gitIp = '***REMOVED***'
-  const finded = remotes.find(remote => {
-    return remote.refs.fetch.includes(gitIp)
-  })
-  return finded ? finded.refs.fetch : null
-}
