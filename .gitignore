@@ -13,4 +13,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 
-lib/
+/lib/
+/static/projects/
