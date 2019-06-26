@@ -26,6 +26,18 @@ function getRusAgroUrl (remotes: RemoteWithRefs[]): (string | null) {
   return finded ? finded.refs.fetch : null
 }
 
+async function tryGetPublishDir(sourcePath: string) {
+  try {
+    const settingsPath = join(sourcePath, '.vscode\\settings.json')
+    const file = await fsPromises.readFile(settingsPath)
+    const settings = JSON.parse(file.toString())
+    const dirs = settings['deploy.reloaded'].targets.map((el: any) => el.dir).join('; ')
+    return dirs
+  } catch {
+    return null
+  }
+}
+
 async function CopyReadme(projectName: string, sourcePath: string) {
   const assetsProjectDir = join(assetsFolder, projectName)
   await fsPromises.mkdir(assetsProjectDir, { recursive: true })
@@ -70,7 +82,8 @@ async function collectData(folder: string) {
   const res: {
     [index: string]: {
       git_url: string | null,
-      documentation?: boolean
+      documentation?: boolean,
+      publishPath?: string
     }
   } = {}
   const tasks = subFolders.map(async ({ name, path }) => {
@@ -93,6 +106,10 @@ async function collectData(folder: string) {
     if (doc) {
       console.log('documentation copy', name)
       res[name].documentation = true
+    }
+    const publishPath = await tryGetPublishDir(path)
+    if (publishPath) {
+      res[name].publishPath = publishPath
     }
   })
   await Promise.all(tasks)

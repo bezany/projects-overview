@@ -3,6 +3,9 @@
     <h1>{{ name }}</h1>
     <div>{{ metaData.git_url }}</div>
     <div
+    v-if="metaData.publishPath"
+    >Путь публикации: {{ metaData.publishPath }}</div>
+    <div
     v-if="documentationUrl"
     ><a target="_blank" :href="documentationUrl">Документация</a></div>
     <div v-if="$asyncComputed.readme.updating">Загрузка README...</div>
