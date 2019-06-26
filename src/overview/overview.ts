@@ -1,9 +1,10 @@
 import {
-  promises as fsPromises
+  promises as fsPromises, existsSync
 } from 'fs'
 import { join } from 'path'
 import simplegit from 'simple-git/promise';
 import { RemoteWithRefs } from 'simple-git/typings/response';
+var copydir = require('copy-dir')
 
 const rootFolder = join(__dirname, '../..')
 const testFolder = join(rootFolder, '..')
@@ -29,6 +30,23 @@ async function CopyReadme(projectName: string, sourcePath: string) {
   console.log('README was copied', projectName)
 }
 
+async function CopyDocumentation(projectName: string, sourcePath: string): Promise<boolean> {
+  const resultDocDir = join(assetsFolder, projectName, 'documentation')
+  const foledWithDocs = ['doc', 'documentation']
+  const findedDocFolder = foledWithDocs.find(el => {
+    if (!existsSync(join(sourcePath, el))) {
+      return false
+    }
+    return true
+  })
+  if (!findedDocFolder) {
+    return false
+  }
+  const sourceDoc = join(sourcePath, findedDocFolder)
+  copydir.sync(sourceDoc, resultDocDir, {})
+  return true
+}
+
 async function collectData(folder: string) {
   const subElements = await fsPromises.readdir(folder)
   const subFolders = subElements
@@ -43,7 +61,8 @@ async function collectData(folder: string) {
     })
   const res: {
     [index: string]: {
-      git_url: string | null
+      git_url: string | null,
+      documentation?: boolean
     }
   } = {}
   const tasks = subFolders.map(async ({ name, path }) => {
@@ -62,6 +81,11 @@ async function collectData(folder: string) {
       git_url: gitUrl
     }
     await CopyReadme(name, path)
+    const doc = await CopyDocumentation(name, path)
+    if (doc) {
+      console.log('documentation copy', name)
+      res[name].documentation = true
+    }
   })
   await Promise.all(tasks)
   const result = JSON.stringify(res, null, 2)

@@ -13,6 +13,7 @@
     "overview": "npm run build-overview && node ./lib/overview/overview"
   },
   "dependencies": {
+    "copy-dir": "^1.1.0",
     "simple-git": "^1.116.0",
     "vue": "^2.5.2",
     "vue-async-computed": "^3.7.0",

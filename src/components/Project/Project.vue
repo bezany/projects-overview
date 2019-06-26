@@ -2,6 +2,9 @@
   <div>
     <h1>{{ name }}</h1>
     <div>{{ metaData.git_url }}</div>
+    <div
+    v-if="documentationUrl"
+    ><a target="_blank" :href="documentationUrl">Документация</a></div>
     <div v-if="$asyncComputed.readme.updating">Загрузка README...</div>
     <v-card>
       <v-card-title primary-title>
@@ -55,6 +58,13 @@ export default {
   computed: {
     metaData () {
       return this.projects[this.name] || {}
+    },
+    documentationUrl () {
+      const meta = this.metaData
+      if (!meta || !meta.documentation) {
+        return null
+      }
+      return `static/projects/${this.name}/documentation/index.html`
     }
   }
 }

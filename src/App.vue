@@ -8,8 +8,11 @@
       <v-list dense>
         <v-list-tile
         v-for="(name) in tiles"
+        active-class="highlighted"
         :key="name"
-        @click="clickMenu(name)">
+        @click="clickMenu(name)"
+        :class="{ 'active-menu': $route.params.name === name }"
+        >
           <v-list-tile-content>
             <v-list-tile-title>{{ name }}</v-list-tile-title>
           </v-list-tile-content>
@@ -54,3 +57,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.active-menu {
+  background-color: antiquewhite
+}
+</style>
