@@ -65,6 +65,6 @@
   },
 
   "files": [
-    "./src/overview.ts"
+    "./src/overview/overview.ts"
   ]
 }

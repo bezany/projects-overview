@@ -10,7 +10,7 @@
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
     "build-overview": "tsc -p .",
-    "overview": "npm run build-overview && node ./lib/overview"
+    "overview": "npm run build-overview && node ./lib/overview/overview"
   },
   "dependencies": {
     "simple-git": "^1.116.0",
