@@ -35,3 +35,11 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 ### Показ markdown из README
 
 С помощью [vue-async-computed](https://github.com/foxbenjaminfox/vue-async-computed) грузится текст README и показывается через [vue-markdown](https://github.com/miaolz123/vue-markdown).
+
+### Получение информации о git
+
+Используется библиотека [git-js](https://github.com/steveukx/git-js)
+
+### Интерфейс
+
+[Vuetify](https://vuetifyjs.com/ru/)
