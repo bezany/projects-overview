@@ -10,7 +10,8 @@
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
     "build-overview": "tsc -p .",
-    "overview": "npm run build-overview && node ./lib/overview/overview"
+    "overview": "npm run build-overview && node ./lib/overview/overview",
+    "dev_all": "npm run overview && npm run dev"
   },
   "dependencies": {
     "copy-dir": "^1.1.0",
