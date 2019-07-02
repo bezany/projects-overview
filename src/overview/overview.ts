@@ -4,11 +4,17 @@ import {
 import { join } from 'path'
 import simplegit from 'simple-git/promise';
 import { RemoteWithRefs } from 'simple-git/typings/response';
+import minimist from 'minimist'
 var copydir = require('copy-dir')
 
 const rootFolder = join(__dirname, '../..')
 const testFolder = join(rootFolder, '..')
 const assetsFolder = join(rootFolder, 'static/projects')
+
+const argFilterGit = 'filter-git-remotes'
+const args = minimist(process.argv.slice(2), {
+  string: [argFilterGit]
+})
 
 async function isDirectory(path: string): Promise<boolean> {
   return (await fsPromises.lstat(path)).isDirectory()
@@ -18,23 +24,23 @@ function isCurrentDirectory(path: string): boolean {
   return path === join(__dirname, '..')
 }
 
-function getRusAgroUrl (remotes: RemoteWithRefs[]): (string | null) {
-  const gitIp = '***REMOVED***'
-  const finded = remotes.find(remote => {
-    return remote.refs.fetch.includes(gitIp)
-  })
-  return finded ? finded.refs.fetch : null
+function getGitRemotes (remotes: RemoteWithRefs[], filter?: string): (string[]) {
+  const allFetch = remotes.map(el => el.refs.fetch)
+  if (filter) {
+    return allFetch.filter(ref => ref.includes(filter))
+  }
+  return allFetch
 }
 
-async function tryGetPublishDir(sourcePath: string) {
+async function tryGetPublishDirs(sourcePath: string): Promise<string[]> {
   try {
     const settingsPath = join(sourcePath, '.vscode\\settings.json')
     const file = await fsPromises.readFile(settingsPath)
     const settings = JSON.parse(file.toString())
-    const dirs = settings['deploy.reloaded'].targets.map((el: any) => el.dir).join('; ')
+    const dirs = settings['deploy.reloaded'].targets.map((el: any) => el.dir)
     return dirs
   } catch {
-    return null
+    return []
   }
 }
 
@@ -67,7 +73,7 @@ async function CopyDocumentation(projectName: string, sourcePath: string): Promi
   return true
 }
 
-async function collectData(folder: string) {
+async function collectData(folder: string, filterGit?: string) {
   const subElements = await fsPromises.readdir(folder)
   const subFolders = subElements
     .map(subFolder => {
@@ -81,9 +87,9 @@ async function collectData(folder: string) {
     })
   const res: {
     [index: string]: {
-      git_url: string | null,
+      gitUrls: string[],
       documentation?: boolean,
-      publishPath?: string
+      publishPaths?: string[]
     }
   } = {}
   const tasks = subFolders.map(async ({ name, path }) => {
@@ -94,12 +100,12 @@ async function collectData(folder: string) {
       return
     }
     const remotes = await git.getRemotes(true)
-    const gitUrl = getRusAgroUrl(remotes)
-    if (!gitUrl) {
+    const gitUrls = getGitRemotes(remotes, filterGit)
+    if (!gitUrls || gitUrls.length === 0) {
       return
     }
     res[name] = {
-      git_url: gitUrl
+      gitUrls: gitUrls
     }
     await CopyReadme(name, path)
     const doc = await CopyDocumentation(name, path)
@@ -107,9 +113,9 @@ async function collectData(folder: string) {
       console.log('documentation copy', name)
       res[name].documentation = true
     }
-    const publishPath = await tryGetPublishDir(path)
-    if (publishPath) {
-      res[name].publishPath = publishPath
+    const publishPaths = await tryGetPublishDirs(path)
+    if (publishPaths.length > 0) {
+      res[name].publishPaths = publishPaths
     }
   })
   await Promise.all(tasks)
@@ -117,4 +123,4 @@ async function collectData(folder: string) {
   fsPromises.writeFile(join(assetsFolder, 'projects.json'), result)
 }
 
-collectData(testFolder)
+collectData(testFolder, args[argFilterGit])

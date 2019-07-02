@@ -1,12 +1,16 @@
 <template>
   <div>
-    <h1>{{ name }} <v-chip>{{ metaData.git_url }}</v-chip></h1>
+    <h1>{{ name }}
+      <v-chip
+      v-for="(gitRef, index) in metaData.gitUrls"
+      :key="index"
+      >{{ gitRef }}</v-chip></h1>
     <div
     v-if="documentationUrl"
     ><a target="_blank" :href="documentationUrl">Документация</a></div>
     <div
-    v-if="metaData.publishPath"
-    >Путь публикации: {{ metaData.publishPath }}</div>
+    v-if="metaData.publishPaths"
+    >Путь публикации: {{ metaData.publishPaths.join('; ') }}</div>
     <div v-if="$asyncComputed.readme.updating">Загрузка README...</div>
     <v-card
     style="margin-top: 10px;"
