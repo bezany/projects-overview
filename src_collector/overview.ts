@@ -60,9 +60,10 @@ async function CopyReadme(projectName: string, sourcePath: string) {
 
 async function CopyDocumentation(projectName: string, sourcePath: string): Promise<boolean> {
   const resultDocDir = join(assetsFolder, projectName, 'documentation')
-  const foledWithDocs = ['doc', 'documentation']
+  const foledWithDocs = ['docs', 'doc', 'documentation']
   const findedDocFolder = foledWithDocs.find(el => {
-    if (!existsSync(join(sourcePath, el))) {
+    if (!existsSync(join(sourcePath, el))
+    || !existsSync(join(sourcePath, el, 'index.html'))) {
       return false
     }
     return true

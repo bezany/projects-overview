@@ -72,7 +72,8 @@ export default {
       if (!meta || !meta.documentation) {
         return null
       }
-      return `static/projects/${this.name}/documentation/index.html`
+      // set slash at end or url for works in most case
+      return `static/projects/${this.name}/documentation/`
     }
   }
 }
