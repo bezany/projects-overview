@@ -6,9 +6,8 @@ import simplegit from 'simple-git/promise';
 import { RemoteWithRefs } from 'simple-git/typings/response';
 import minimist from 'minimist'
 var copydir = require('copy-dir')
-
-const rootFolder = join(__dirname, '../..')
-const testFolder = join(rootFolder, '..')
+const rootFolder = join(require('app-root-path').toString(), '..') // app-root-path return sup-project root. go to top project root.
+const projectsFolder = join(rootFolder, '..')
 const assetsFolder = join(rootFolder, 'static/projects')
 
 const argFilterGit = 'filter-git-remotes'
@@ -123,4 +122,4 @@ async function collectData(folder: string, filterGit?: string) {
   fsPromises.writeFile(join(assetsFolder, 'projects.json'), result)
 }
 
-collectData(testFolder, args[argFilterGit])
+collectData(projectsFolder, args[argFilterGit])

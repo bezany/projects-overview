@@ -15,3 +15,4 @@ yarn-error.log*
 
 /lib/
 /static/projects/
+/src_collector/dist/

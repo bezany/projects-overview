@@ -1,0 +1,16 @@
+{
+  "name": "src_collector",
+  "version": "1.0.0",
+  "description": "Collect informations about projects",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "app-root-path": "^2.2.1",
+    "copy-dir": "^1.1.0",
+    "minimist": "^1.2.0",
+    "simple-git": "^1.118.0"
+  }
+}

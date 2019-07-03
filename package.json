@@ -9,14 +9,11 @@
     "start": "npm run dev",
     "lint": "eslint --ext .js,.vue src",
     "build": "node build/build.js",
-    "build-overview": "tsc -p .",
-    "overview": "npm run build-overview && node ./lib/overview/overview",
+    "build-overview": "cd src_collector && tsc -p .",
+    "overview": "npm run build-overview && node ./src_collector/dist/overview",
     "dev_all": "npm run overview && npm run dev"
   },
   "dependencies": {
-    "copy-dir": "^1.1.0",
-    "minimist": "^1.2.0",
-    "simple-git": "^1.116.0",
     "vue": "^2.5.2",
     "vue-async-computed": "^3.7.0",
     "vue-markdown": "^2.2.4",
