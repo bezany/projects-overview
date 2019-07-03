@@ -1,20 +1,23 @@
 # projects-overview
 
-Генератор сайта с обзором проектов.
+Show simple dashboard with git projects overview.
 
-Для каждого проекта из папки выводится:
+For each projects from parent folder (excludes this project) shows:
 
-+ название (имя папки)
-+ Ссылка на git
-+ Путь к папке на веб-сервере
-+ Документация к API
-+ Содержимое README
++ name (folder name)
++ git remotes urls
++ publish path from `deploy.reloaded` plugin for VSCode (very specific case)
++ documentations (copy from folder ['docs', 'doc', 'documentation'] if exists)
++ README.md
 
 ## Build Setup
 
 ``` bash
 # install dependencies
 npm install
+
+# collect projects data
+npm run overview
 
 # serve with hot reload at localhost:8080
 npm run dev
@@ -28,18 +31,25 @@ npm run build --report
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
-## Разработка
+## Collect data
 
-Проект сайта создан на основе шаблона [vue-webpack-boilerplate](https://github.com/vuejs-templates/webpack).
+For collect data about projects used sub-project `src_collector`.
 
-### Показ markdown из README
+You can filter project by git remotes urls. For this use argument `filter-git-remotes` (alias `f`).
 
-С помощью [vue-async-computed](https://github.com/foxbenjaminfox/vue-async-computed) грузится текст README и показывается через [vue-markdown](https://github.com/miaolz123/vue-markdown).
+### Example
 
-### Получение информации о git
+```bash
+cd src_collector
+npm run run -- --f="github"
+cd ..
+npm run dev
+```
 
-Используется библиотека [git-js](https://github.com/steveukx/git-js)
+## Built With
 
-### Интерфейс
-
-[Vuetify](https://vuetifyjs.com/ru/)
++ [vue](https://vuejs.org/) - The Progressive JavaScript Framework
++ [Vuetify.js](https://vuetifyjs.com) - Vue.js Material Component Framework
++ [git-js](https://github.com/steveukx/git-js) - Open-source JavaScript library for interactive maps
++ [vue-markdown](https://github.com/miaolz123/vue-markdown) - Markdown Parser for Vue
++ [vue-async-computed](https://github.com/foxbenjaminfox/vue-async-computed) - Async computed properties for Vue.js
