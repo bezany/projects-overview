@@ -19,8 +19,8 @@ async function isDirectory(path: string): Promise<boolean> {
   return (await fsPromises.lstat(path)).isDirectory()
 }
 
-function isCurrentDirectory(path: string): boolean {
-  return path === join(__dirname, '..')
+function isCurrentProject(path: string): boolean {
+  return path === rootFolder
 }
 
 function getGitRemotes (remotes: RemoteWithRefs[], filter?: string): (string[]) {
@@ -72,18 +72,29 @@ async function CopyDocumentation(projectName: string, sourcePath: string): Promi
   return true
 }
 
+async function asyncFilter(array: any[], filter: (element: any) => Promise<boolean>) {
+  const res = []
+  for (let i = 0; i < array.length; ++i) {
+    const check = await filter(array[i])
+    if (check) {
+      res.push(array[i])
+    }
+  }
+  return res
+}
+
 async function collectData(folder: string, filterGit?: string) {
   const subElements = await fsPromises.readdir(folder)
-  const subFolders = subElements
+  let subFolders = subElements
     .map(subFolder => {
       return {
         name: subFolder,
         path: join(folder, subFolder)
       }
     })
-    .filter(async ({ name, path }) => {
-      (await isDirectory(path)) && !isCurrentDirectory(path)
-    })
+  subFolders = await asyncFilter(subFolders, async ({ name, path }) => {
+    return (await isDirectory(path)) && !isCurrentProject(path)
+  })
   const res: {
     [index: string]: {
       gitUrls: string[],
