@@ -12,8 +12,11 @@ const assetsFolder = join(rootFolder, 'static/projects')
 
 const argFilterGit = 'filter-git-remotes'
 const args = minimist(process.argv.slice(2), {
-  string: [argFilterGit]
+  string: [argFilterGit],
+  alias: {[argFilterGit]: 'f'}
 })
+const filterGitVal = args[argFilterGit]
+console.log(argFilterGit, filterGitVal)
 
 async function isDirectory(path: string): Promise<boolean> {
   return (await fsPromises.lstat(path)).isDirectory()
@@ -133,4 +136,4 @@ async function collectData(folder: string, filterGit?: string) {
   fsPromises.writeFile(join(assetsFolder, 'projects.json'), result)
 }
 
-collectData(projectsFolder, args[argFilterGit])
+collectData(projectsFolder, filterGitVal)
