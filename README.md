@@ -10,6 +10,20 @@ For each projects from parent folder (excludes this project) shows:
 + documentations (copy from folder ['docs', 'doc', 'documentation'] if exists)
 + README.md
 
+## Prerequisites
+
+Need node version 10 for [fs Promises API](https://nodejs.org/dist/latest-v10.x/docs/api/fs.html#fs_fs_promises_api)
+
+## Quick start
+
+```bash
+## in projects folder
+git clone https://github.com/bezany/projects-overview.git
+cd projects-overview
+npm install
+npm run dev_all
+```
+
 ## Build Setup
 
 ``` bash
