@@ -7,11 +7,11 @@
       >{{ gitRef }}</v-chip></h1>
     <div
     v-if="documentationUrl"
-    ><a target="_blank" :href="documentationUrl">Документация</a></div>
+    ><a target="_blank" :href="documentationUrl">Documentation</a></div>
     <div
     v-if="metaData.publishPaths"
-    >Путь публикации: {{ metaData.publishPaths.join('; ') }}</div>
-    <div v-if="$asyncComputed.readme.updating">Загрузка README...</div>
+    >Publish path: {{ metaData.publishPaths.join('; ') }}</div>
+    <div v-if="$asyncComputed.readme.updating">Loading README...</div>
     <v-card
     style="margin-top: 10px;"
     >
@@ -56,7 +56,7 @@ export default {
           }
         })
         if (!rsp.ok) {
-          return 'Ошибка! Возможно, нет README'
+          return 'Error! Not found README'
         }
         return rsp.text()
       },

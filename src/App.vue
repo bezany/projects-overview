@@ -21,7 +21,7 @@
     </v-navigation-drawer>
     <v-toolbar app>
       <v-toolbar-side-icon @click.stop="showNavigation = !showNavigation"></v-toolbar-side-icon>
-      <v-toolbar-title>Проекты</v-toolbar-title>
+      <v-toolbar-title>Projects</v-toolbar-title>
     </v-toolbar>
     <v-content>
       <v-container fluid>
