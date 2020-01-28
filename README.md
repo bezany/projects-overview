@@ -64,6 +64,6 @@ npm run dev
 
 + [vue](https://vuejs.org/) - The Progressive JavaScript Framework
 + [Vuetify.js](https://vuetifyjs.com) - Vue.js Material Component Framework
-+ [git-js](https://github.com/steveukx/git-js) - Open-source JavaScript library for interactive maps
++ [git-js](https://github.com/steveukx/git-js) - A light weight interface for running git commands.
 + [vue-markdown](https://github.com/miaolz123/vue-markdown) - Markdown Parser for Vue
 + [vue-async-computed](https://github.com/foxbenjaminfox/vue-async-computed) - Async computed properties for Vue.js
